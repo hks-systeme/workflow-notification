@@ -28,13 +28,13 @@ jobs:
       - name: "Checkout"
         uses: "actions/checkout@v2.4.0"
 
-      #- name: "Install dependencies with npm"
-      #  run: "npm ci"
-      #  working-directory: "automationtests/"
+      - name: "Install dependencies with npm"
+        run: "npm ci"
+        working-directory: "automationtests/"
 
-      #- name: "Verify cypress"
-       # run: "$(npm bin)/cypress verify"
-        #working-directory: "automationtests/"
+      - name: "Verify cypress"
+        run: "$(npm bin)/cypress verify"
+        working-directory: "automationtests/"
 
       #- name: "Run end-to-end tests with cypress"
       #  run: "npm run test:ichrome -- --record --key ${{ secrets.DASHBOARD_KEY }} "
