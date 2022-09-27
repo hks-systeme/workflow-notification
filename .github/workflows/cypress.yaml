@@ -1,0 +1,55 @@
+# https://docs.github.com/en/actions
+
+name: "Cypress Tests"
+
+on: # yamllint disable-line rule:truthy
+  pull_request: null
+  push:
+    branches:
+      - "main"
+#on:
+#  workflow_run:
+#    workflows: ["deploy"]
+#    types:
+#      - completed
+jobs:
+  end-to-end-tests:
+    name: "End-to-end Tests"
+
+    runs-on: "ubuntu-latest"
+
+    container: "cypress/browsers:node12.18.0-chrome83-ff77"
+
+    #strategy:
+    #  matrix:
+    #    job: [0, 1, 2, 3]
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2.4.0"
+
+      #- name: "Install dependencies with npm"
+      #  run: "npm ci"
+      #  working-directory: "automationtests/"
+
+      #- name: "Verify cypress"
+       # run: "$(npm bin)/cypress verify"
+        #working-directory: "automationtests/"
+
+      #- name: "Run end-to-end tests with cypress"
+      #  run: "npm run test:ichrome -- --record --key ${{ secrets.DASHBOARD_KEY }} "
+      #  working-directory: "automationtests/cypress/integration/test/"
+
+      - name: "Send mail"
+        if: "failure()"
+        uses: "./"
+        with:
+          # mail server settings
+          server_address: "smtp.office365.com"
+          server_port: "587"
+          username: "${{ secrets.SMTP_USERNAME }}"
+          password: "${{ secrets.SMTP_USER_PWD }}"
+          subject: "${{ github.job }} job of ${{ github.repository }} has ${{ job.status }}"
+          body: "${{ github.job }} job in workflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}"
+          to: "syamkrishna.gopalakrishnan@hks-systeme.de, ${{ secrets.CI_NOTIFY_TEAMS }}"
+          from: "HKS Systeme"

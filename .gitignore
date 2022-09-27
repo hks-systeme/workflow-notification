@@ -1,0 +1,10 @@
+.idea
+.DS_Store
+.htaccess
+
+b2b-portal
+bp_service
+docker/.docker-sync
+automationtests/node_modules
+performancetests/node_modules
+.github/actions/github/mail/node_modules
